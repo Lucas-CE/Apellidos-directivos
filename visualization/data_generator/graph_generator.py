@@ -63,8 +63,8 @@ if __name__ == "__main__":
 
     # Configuración del grafo
     group_colors = {
-        "Empresa": "#FF0000",  # Rojo para empresas
-        "Apellido": "#00FF00",  # Verde para apellidos
+        "Empresa": "#E66100",  # Rojo para empresas
+        "Apellido": "#5D3A9B",  # Verde para apellidos
     }
 
     report_path = Path("visualization")
