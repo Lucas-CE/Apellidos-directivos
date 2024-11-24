@@ -53,29 +53,43 @@ def generate_graph(
 
 # Configuración para generar el grafo
 if __name__ == "__main__":
-    # Ruta al archivo CSV
-    input_csv = "data/surname_relevant_in_some_company.csv"
-    input_csv = "data/surname_with_relevant_companies_count.csv"
-    input_csv = "data/most_relevant_directors_surnames.csv"
-
-    # Leer el CSV
-    df = pd.read_csv(input_csv)
-
     # Configuración del grafo
     group_colors = {
-        "Empresa": "#E66100",  # Rojo para empresas
-        "Apellido": "#5D3A9B",  # Verde para apellidos
+        "Empresa": "#E66100",  # Naranja para empresas
+        "Apellido": "#5D3A9B",  # Morado para apellidos
     }
-
     report_path = Path("visualization")
     report_path.mkdir(exist_ok=True)
 
-    # Generar el grafo
-    generate_graph(
-        df=df,
-        source_col_name="Nombre_empresa",
-        target_col_name="Apellido",
-        edge_weight="conteo",
-        group_colors=group_colors,
-        report_path=report_path,
-    )
+    paths_graphs = [
+        {
+            "input_csv": "data/surname_with_relevant_companies_count.csv",
+            "gexf_file_name": "graph_surname_with_relevant_companies_count",
+        },
+        {
+            "input_csv": "data/most_relevant_directors_surnames.csv",
+            "gexf_file_name": "graph_most_relevant_directors_surnames",
+        },
+        {
+            "input_csv": "data/surname_relevant_in_some_company.csv",
+            "gexf_file_name": "graph_surname_relevant_in_some_company",
+        },
+    ]
+
+    for path_graph in paths_graphs:
+        input_csv = path_graph["input_csv"]
+        gexf_file_name = path_graph["gexf_file_name"]
+
+        # Leer el CSV
+        df = pd.read_csv(input_csv)
+
+        # Generar el grafo
+        generate_graph(
+            df=df,
+            source_col_name="Nombre_empresa",
+            target_col_name="Apellido",
+            edge_weight="conteo",
+            group_colors=group_colors,
+            report_path=report_path,
+            gexf_file_name=gexf_file_name,
+        )
