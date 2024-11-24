@@ -100,7 +100,7 @@
                     <div class="global-vis-sub-container mt-1">
                         <img 
                             id="wordcloud" 
-                            src="wordcloud.png" 
+                            src="visualization_data/wordcloud.png" 
                             alt="Nube de Palabras"
                             width="100%"
                         />
@@ -123,7 +123,7 @@
                     <div class="d-flex flex-column powerful-surename-wordcloud">
                         <h4><b></b>Empresas relacionadas con el apellido LARRAIN</b></h4>
                         <img 
-                            src="LARRAIN_wordcloud.png" 
+                            src="visualization_data/LARRAIN_wordcloud.png" 
                             alt="Nube de Palabras" 
                             class="wordcloud"
                         />
@@ -131,7 +131,7 @@
                     <div class="d-flex flex-column powerful-surename-wordcloud">
                         <h4><b></b>Empresas relacionadas con el apellido VIAL</b></h4>
                         <img 
-                            src="VIAL_wordcloud.png" 
+                            src="visualization_data/VIAL_wordcloud.png" 
                             alt="Nube de Palabras" 
                             class="wordcloud"
                         />
@@ -141,7 +141,7 @@
                     <div class="d-flex flex-column powerful-surename-wordcloud">
                         <h4><b></b>Empresas relacionadas con el apellido ECHEVERRIA</h4>
                         <img 
-                            src="ECHEVERRIA_wordcloud.png" 
+                            src="visualization_data/ECHEVERRIA_wordcloud.png" 
                             alt="Nube de Palabras" 
                             class="wordcloud"
                         />
@@ -149,7 +149,7 @@
                     <div class="d-flex flex-column powerful-surename-wordcloud">
                         <h4><b></b>Empresas relacionadas con el apellido ERRAZURIZ</h4>
                         <img 
-                            src="ERRAZURIZ_wordcloud.png" 
+                            src="visualization_data/ERRAZURIZ_wordcloud.png" 
                             alt="Nube de Palabras" 
                             class="wordcloud"
                         />
@@ -160,7 +160,7 @@
 
         <script>
             // Cargar datos del histograma desde un archivo JSON
-            fetch("bar_data.json")
+            fetch("visualization_data/bar_data.json")
             .then((res) => res.json())
             .then((data) => {
                 // Renderizar gráficos de barras con Plotly
@@ -175,7 +175,7 @@
                     yaxis: { title: 'Frecuencia' }
                 });
             });
-            fetch("bar_dominant_surname_data.json")
+            fetch("visualization_data/bar_dominant_surname_data.json")
             .then((res) => res.json())
             .then((data) => {
                 // Renderizar gráficos de barras con Plotly
@@ -362,8 +362,8 @@
                     });
                 });
             }
-            renderGraph("surename-graph", "graph_most_relevant_directors_surnames.gexf");
-            renderGraph("dominant-surname", "graph_surname_relevant_in_some_company.gexf");
+            renderGraph("surename-graph", "visualization_data/graph_most_relevant_directors_surnames.gexf");
+            renderGraph("dominant-surname", "visualization_data/graph_surname_relevant_in_some_company.gexf");
         </script>
     </body>
 </html>
