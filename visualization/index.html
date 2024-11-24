@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Apellidos directivos</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            body {
+                text-align: center;
+                font-family: 'Arial', sans-serif; /* Modern font */
+            }
+
+            h1 {
+                font-weight: bold;
+                color: #333;
+            }
+
+            .network-graph {
+                position: relative;
+                width: 45vw;
+                height: 80vh;
+                text-align: left;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+            }
+
+            .network-graph canvas {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            #selected-node {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #ffffff;
+                border: 1px solid #007bff;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 10px 15px;
+                display: none;
+                font-size: 16px;
+                color: #333;
+                z-index: 10; /* Ensure it is above the graph */
+            }
+
+            #selected-node b {
+                color: #007bff;
+                font-weight: bold;
+            }
+
+            .bar-charts {
+                width: 30vw;
+                height: 80vh;
+                background-color: #007bff;
+            }
+
+            .plot-container {
+                width: auto;
+                height: 50%;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+                background-color:aquamarine;
+            }
+
+            .hover-edge {
+                stroke: red; /* Color de las aristas destacadas */
+                stroke-width: 2px;
+            }
+
+        </style>
+        <meta charset="utf-8" />
+        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <!-- Bootstrap JS and Popper.js (optional) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="js/plotly-2.35.2.min.js"></script>
+        <script src="js/graphology.min.js"></script>
+        <script src="js/graphology-library.min.js"></script>
+        <script src="js/sigma.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container mt-4">
+            <h1 class="text-center mb-4">Apellidos de los directivos de empresas Chilenas</h1>
+            <div class="d-flex flex-row mt-4">
+                <!-- Grafo -->
+                <div id="surename-graph" class="network-graph">
+                    <div id="selected-node"><b>Selected node:</b> <span id="node-label"></span></div>
+                </div>
+
+                <!-- Gráficos de barras -->
+                <div class="bar-charts d-flex flex-column">
+                    <div id="bar-chart-1" class="plot-container">
+                        algo
+                    </div>
+                    <div id="bar-chart-2" class="plot-container">
+                        algo
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <script>
+                fetch("./graph.gexf")
+                .then((res) => res.text())
+                .then((res) => {
+                    let graph = graphologyLibrary.gexf.parse(graphology.Graph, res);
+                    const container = document.getElementById("surename-graph");
+
+                    // Calcular grados para nodos
+                    const degrees = graph.nodes().map((node) => graph.degree(node));
+                    const minDegree = Math.min(...degrees);
+                    const maxDegree = Math.max(...degrees);
+                    const minSize = 2, maxSize = 8;
+
+                    graph.forEachNode((node) => {
+                        // Ajustar el tamaño según el grado
+                        const degree = graph.degree(node);
+                        
+                        graph.setNodeAttribute(
+                            node,
+                            "size",
+                            minSize + ((degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize)
+                        );
+                
+                        // Colorear nodos según el atributo "color"
+                        const color = graph.getNodeAttribute(node, "color") || "#ccc";
+                        graph.setNodeAttribute(node, "color", color);
+
+                        // Obtener el nombre original del nodo
+                        const originalLabel = graph.getNodeAttribute(node, "label");
+
+                        // Truncar nombres largos
+                        const maxLength = 10; // Máximo de caracteres antes de truncar
+                        const truncatedLabel =
+                            originalLabel.length > maxLength
+                                ? originalLabel.substring(0, maxLength) + "..."
+                                : originalLabel;
+
+                        // Guardar el nombre completo
+                        graph.setNodeAttribute(node, "fullLabel", originalLabel);
+
+                        // Guardamos el nombre truncado en otro atributo
+                        graph.setNodeAttribute(node, "truncatedLabel", truncatedLabel);
+
+                        // Usar el nombre truncado como etiqueta
+                        graph.setNodeAttribute(node, "label", truncatedLabel);
+                    });
+
+
+                    // Ajustar tamaño de las aristas según el peso
+                    graph.forEachEdge((edge) => {
+                        const weight = graph.getEdgeAttribute(edge, "conteo") || 1; // Usar atributo 'conteo'
+                        const minWeight = 1, maxWeight = 10;
+                        const scaledWeight =
+                            minWeight + ((weight - minDegree) / (maxDegree - minDegree)) * (maxWeight - minWeight);
+                        graph.setEdgeAttribute(edge, "size", scaledWeight ** 1.5);
+                    });              
+                        
+
+                    // Layout inicial circular para evitar superposiciones
+                    graphologyLibrary.layout.circular.assign(graph);
+
+                    // Aplicar ForceAtlas2 para organizar el grafo
+                    graphologyLibrary.layoutForceAtlas2.assign(graph, {
+                        iterations: 300,
+                        getEdgeWeight: (edge) => graph.getEdgeAttribute(edge, "conteo"),
+                        settings: {
+                            strongGravityMode: true,
+                            gravity: 0.3,
+                            scalingRatio: 10,
+                            slowDown: 1,
+                        },
+                    });
+
+                    // Renderizar el grafo con Sigma
+                    const renderer = new Sigma(graph, container);
+
+                    const tooltip = document.getElementById("selected-node");
+                    const nodeLabel = document.getElementById("node-label");
+
+                    let selectedNode = null; // Variable global para el nodo seleccionado
+
+                    renderer.on("enterNode", (event) => {
+                        const node = event.node;
+                        const fullLabel = graph.getNodeAttribute(node, "fullLabel");
+                        nodeLabel.textContent = fullLabel;
+                        tooltip.style.display = "block";
+                    });
+
+                    // Evento: al hacer clic en un nodo
+                    renderer.on("clickNode", ({ node }) => {
+                        // Limpiar el nodo previamente seleccionado (si existe)
+                        if (selectedNode) {
+                            graph.updateNodeAttribute(selectedNode, "highlighted", () => false);
+                            graph.forEachEdge(selectedNode, (edge) => {
+                                // Obtenemos el nodo que conecta con el nodo seleccionado
+                                const target = graph.opposite(selectedNode, edge);
+                                const truncatedLabel = graph.getNodeAttribute(target, "truncatedLabel");
+                                // Actualizamos el label del nodo opuesto
+                                graph.updateNodeAttribute(target, "label", () => truncatedLabel);
+                                graph.updateEdgeAttribute(edge, "highlighted", () => false);
+                            });
+                        }
+                    
+                        // Actualizar el nodo actualmente seleccionado
+                        selectedNode = node;
+                    
+                        // Resaltar el nuevo nodo seleccionado y sus aristas
+                        graph.updateNodeAttribute(node, "highlighted", () => true);
+                        graph.forEachEdge(node, (edge) => {
+                            // Obtenemos el nodo que conecta con el nodo seleccionado
+                            const target = graph.opposite(selectedNode, edge);
+                            const completeLabel = graph.getNodeAttribute(target, "fullLabel");
+                            // Actualizamos el label del nodo opuesto
+                            graph.updateNodeAttribute(target, "label", () => completeLabel);
+                            graph.updateEdgeAttribute(edge, "highlighted", () => true);
+                        });
+                    
+                        renderer.refresh(); // Actualizar el grafo
+                    });
+                    
+                    // Evento: al tocar otro lugar (vacío) del grafo
+                    renderer.on("clickStage", () => {
+                        if (selectedNode) {
+                        // Limpiar el nodo seleccionado y sus aristas
+                        graph.updateNodeAttribute(selectedNode, "highlighted", () => false);
+                        graph.forEachEdge(selectedNode, (edge) => {
+                            // Obtenemos el nodo que conecta con el nodo seleccionado
+                            const target = graph.opposite(selectedNode, edge);
+                            const truncatedLabel = graph.getNodeAttribute(target, "truncatedLabel");
+                            // Actualizamos el label del nodo opuesto
+                            graph.updateNodeAttribute(target, "label", () => truncatedLabel);
+                            graph.updateEdgeAttribute(edge, "highlighted", () => false);
+                        });
+                        selectedNode = null; // Reiniciar el nodo seleccionado
+                        renderer.refresh(); // Actualizar el grafo
+                        }
+                    });
+                    renderer.setSetting("nodeReducer", (node, data) => {
+                        if (data.highlighted) {
+                          return { ...data, color: "#FFD700", zIndex: 1 }; // Nodo destacado
+                        }
+                        return data;
+                    });
+                      
+                    renderer.setSetting("edgeReducer", (edge, data) => {
+                        if (data.highlighted) {
+                          return { ...data, color: "#FF0000", size: 2 }; // Arista destacada
+                        }
+                        return data;
+                    });
+                });
+        </script>
+    </body>
+</html>
+    
