@@ -1,369 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Apellidos directivos</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Bootstrap CSS CDN -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <style>
-            body {
-                text-align: left;
-                font-family: 'Arial', sans-serif;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+  <head>
+    <title>Apellidos directivos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        text-align: left;
+        font-family: "Arial", sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
-            .main-cont {
-                max-width: 95vw;
-                max-height: 100vh;
-                margin: 0 auto;
-            }
+      .main-cont {
+        max-width: 95vw;
+        margin: 0 auto;
+        height: fit-content;
+      }
 
-            h1 {
-                font-weight: bold;
-                color: #333;
-            }
+      h1 {
+        font-weight: bold;
+        color: #333;
+      }
 
-            .network-graph {
-                height: 69vh;
-                text-align: left;
-                border: 1px solid #ccc;
-                background-color: #f9f9f9;
-            }
+      .network-graph {
+        height: 54vh;
+        text-align: left;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+      }
 
-            .network-graph canvas {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-            }
+      .network-graph canvas {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
 
-            .plot-container {
-                width: 33vw;
-                height: 80vh;
-            }
+      .plot-container {
+        width: 25vw;
+        height: 80vh;
+      }
 
-            .global-vis-sub-container {
-                width: 100%;
-                height: 50%;
-                border: 1px solid #ccc;
-            }
+      .global-vis-sub-container {
+        width: 100%;
+        height: 50%;
+        border: 1px solid #ccc;
+      }
 
-            .hover-edge {
-                stroke: #000000; /* Color de las aristas destacadas */
-                stroke-width: 2px;
-            }
+      .hover-edge {
+        stroke: #000000; /* Color de las aristas destacadas */
+        stroke-width: 2px;
+      }
 
-            .dominant-surname-vis {
-                margin: auto;
-                width: 100%;
-            }
+      .dominant-surname-vis {
+        margin: auto;
+        width: 100%;
+      }
 
-            .powerful-surename-wordcloud {
-                padding: 0.5%;
-                margin: 0.5%;
-                width: 43%;
-                border: 1px solid #ccc;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
+      .powerful-surename-wordcloud {
+        padding: 0.5%;
+        margin: 0.5%;
+        width: 43%;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
+      #global-first-row {
+        height: 65vh;
+      }
 
-        </style>
-        <meta charset="utf-8" />
-        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <!-- Bootstrap JS and Popper.js (optional) -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="js/plotly-2.35.2.min.js"></script>
-        <script src="js/graphology.min.js"></script>
-        <script src="js/graphology-library.min.js"></script>
-        <script src="js/sigma.min.js"></script>
-    </head>
+      #global-second-row {
+        height: 45vh;
+      }
 
-    <body>
-        <div class="main-cont container mt-4">
-            <h1 class="mb-4">Apellidos de los directivos de empresas Chilenas</h1>
-            <div class="d-flex flex-row">
-                <!-- Grafo -->
-                <div class="graph-container">
-                    <h4>Grafo de empresas y los apellidos de los directivos que han tenido</h4>
-                    <p class="fw-light text-secondary">
-                        El ancho de las aristas indica la cantidad de veces que un apellido ha aparecido en algún directivo de una empresa.
-                    </p>
-                    <div id="surename-graph" class="network-graph"></div>
-                </div>
-                <!-- Gráficos de barras -->
-                <div class="plot-container d-flex flex-column ml-1">
-                    <div id="bar-chart-1" class="global-vis-sub-container mb-1"></div>
-                    <div class="global-vis-sub-container mt-1">
-                        <img 
-                            id="wordcloud" 
-                            src="visualization_data/wordcloud.png" 
-                            alt="Nube de Palabras"
-                            width="100%"
-                        />
-                    </div>
-                </div>
-            </div>
+      .secondary-global-visualization {
+        width: 100%;
+      }
+
+      .secondary-global-vis-container {
+        height: 50%;
+      }
+
+      .graph-container {
+        height: 100%;
+      }
+
+      #side-secodary-global-visualization {
+        height: 100%;
+      }
+
+      .down-global-vis-container {
+        height: 100%;
+      }
+
+      .down-global-vis-bar-plot {
+        width: 100%;
+        height: 100%;
+      }
+
+      #cluster-map-vis {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .cluster-map-company-surname {
+        height: fit-content;
+      }
+    </style>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+      window.PlotlyConfig = { MathJaxConfig: "local" };
+    </script>
+    <!-- Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/plotly-2.35.2.min.js"></script>
+    <script src="js/graphology.min.js"></script>
+    <script src="js/graphology-library.min.js"></script>
+    <script src="js/sigma.min.js"></script>
+  </head>
+
+  <body class="container-fluid">
+    <h1 class="my-5 text-center">
+      Apellidos de los directivos de empresas Chilenas
+    </h1>
+    <div class="row" id="global-first-row">
+      <div class="col-8 graph-container">
+        <h4>
+          Grafo de empresas y los apellidos de los directivos que han tenido
+        </h4>
+        <p class="fw-light text-secondary">
+          El ancho de las aristas indica la cantidad de veces que un apellido ha
+          aparecido en algún directivo de una empresa.
+        </p>
+        <div id="surename-graph" class="network-graph"></div>
+      </div>
+      <div class="col-4" id="side-secodary-global-visualization">
+        <div class="row secondary-global-vis-container">
+          <div id="bar-chart-1" class="secondary-global-visualization"></div>
         </div>
-
-        <div class="main-cont container mt-5">
-            <h1 class="mb-4">Existen familias que podrían tener mucho poder en una empresa?</h1>
-            <div class="d-flex flex-row">
-                <div id="bar-chart-2" class="dominant-surname-vis"></div>
-            </div>
+        <div class="row secondary-global-vis-container">
+          <img
+            id="wordcloud"
+            src="visualization_data/wordcloud.png"
+            alt="Nube de Palabras"
+            width="80%"
+            id="global-vis-wordcloud"
+          />
         </div>
+      </div>
+    </div>
+    <div class="row" id="global-second-row">
+      <div class="col down-global-vis-container">
+        <div
+          id="quantity-companies-to-each-surname"
+          class="down-global-vis-bar-plot"
+        ></div>
+      </div>
+      <div class="col down-global-vis-container">
+        <div
+          id="quantity-surmanes-to-each-company"
+          class="down-global-vis-bar-plot"
+        ></div>
+      </div>
+    </div>
 
-        <div class="main-cont container mt-5">
-            <h1 class="mb-1">Hay familias con poder en muchas empresas?</h1>
-            <div class="d-flex flex-column">
-                <div class="d-flex flex-row">
-                    <div class="d-flex flex-column powerful-surename-wordcloud">
-                        <h4><b></b>Empresas relacionadas con el apellido LARRAIN</b></h4>
-                        <img 
-                            src="visualization_data/LARRAIN_wordcloud.png" 
-                            alt="Nube de Palabras" 
-                            class="wordcloud"
-                        />
-                    </div>
-                    <div class="d-flex flex-column powerful-surename-wordcloud">
-                        <h4><b></b>Empresas relacionadas con el apellido VIAL</b></h4>
-                        <img 
-                            src="visualization_data/VIAL_wordcloud.png" 
-                            alt="Nube de Palabras" 
-                            class="wordcloud"
-                        />
-                    </div>
-                </div>
-                <div class="d-flex flex-row">
-                    <div class="d-flex flex-column powerful-surename-wordcloud">
-                        <h4><b></b>Empresas relacionadas con el apellido ECHEVERRIA</h4>
-                        <img 
-                            src="visualization_data/ECHEVERRIA_wordcloud.png" 
-                            alt="Nube de Palabras" 
-                            class="wordcloud"
-                        />
-                    </div>
-                    <div class="d-flex flex-column powerful-surename-wordcloud">
-                        <h4><b></b>Empresas relacionadas con el apellido ERRAZURIZ</h4>
-                        <img 
-                            src="visualization_data/ERRAZURIZ_wordcloud.png" 
-                            alt="Nube de Palabras" 
-                            class="wordcloud"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div> 
+    <div class="main-cont container mt-5">
+      <h1 class="mb-1">
+        Hay apellidos con mucha presencia en una o varias empresas?
+      </h1>
+      <p class="fs-1">
+        Se observan apellidos como los GARCIA que tienen una presencia muy
+        importante en una sola empresa, en su caso, "COMPAÑIA DE INVERSINOES LA
+        ESPAÑOL S.A.". Por otro lado hay apellidos como LARRAIN que tienen una
+        importante presencia es muchas empresas.
+      </p>
+      <p class="fs-1">
+        Un último insight importante de destacar es identificar ciertos
+        apellidos altamente relacionados, como es el caso de FERNANDEZ y SILVA,
+        lo que se condice con hay empresas donde ambos apellidos tienen
+        presencia entre los directivos, así, pudiendo observar posibles
+        agrupaciones de familias relacionadas.
+      </p>
+      <div class="cluster-map-company-surname d-flex justify-content-center">
+        <img
+          src="visualization_data/cluster-map-apellidos-empresas.png"
+          alt="Cluster de apellidos y empresas"
+          width="70%"
+          id="cluster-map-vis"
+        />
+      </div>
+    </div>
 
-        <script>
-            // Cargar datos del histograma desde un archivo JSON
-            fetch("visualization_data/bar_data.json")
-            .then((res) => res.json())
-            .then((data) => {
-                // Renderizar gráficos de barras con Plotly
-                Plotly.newPlot('bar-chart-1', [{
-                    x: data.x,
-                    y: data.y,
-                    type: 'bar',
-                    marker: { color: 'purple' }
-                }], {
-                    title: 'Distribución de repeticiones de apellido en una empresa',
-                    xaxis: { title: 'Número de apariciones de un apellido en una empresa' },
-                    yaxis: { title: 'Frecuencia' }
-                });
-            });
-            fetch("visualization_data/bar_dominant_surname_data.json")
-            .then((res) => res.json())
-            .then((data) => {
-                // Renderizar gráficos de barras con Plotly
-                Plotly.newPlot('bar-chart-2', [{
-                    x: data.x,
-                    y: data.y,
-                    type: 'bar',
-                    orientation: 'h', // Configura las barras horizontales
-                    marker: { color: 'purple' }
-                }], {
-                    title: 'Distribución de repeticiones de apellido en una empresa',
-                    margin: { l: 250 },
-                    xaxis: { title: 'Número de apariciones de apellido en una empresa' }
-                });
-            });
+    <div class="main-cont container mt-5">
+      <h1 class="my-3">
+        Y si yo tuviera una de esas empresa, sería fácil llegar a las otras
+        familias?
+      </h1>
+      <p class="fs-1">
+        Es interesante notar que la distancia promedio de cada familia a todas
+        las demás tiene una fuerte dominancia entre las 5 y 6 conexiones de
+        distancia, lo que implica que una familia para llegar a cualquier otra
+        que desee tendría que pasar por alrededord de 5 a 6 empresas o familias.
+      </p>
+      <div class="">
+        <div id="hist-surename-distance" class="dominant-surname-vis"></div>
+      </div>
+    </div>
 
-            function renderGraph(graphContainerId, gexFilePath){
-                fetch(gexFilePath)
-                .then((res) => res.text())
-                .then((res) => {
-                    let graph = graphologyLibrary.gexf.parse(graphology.Graph, res);
-                    const container = document.getElementById(graphContainerId);
+    <div class="main-cont container mt-5">
+      <h1 class="my-3">
+        Pero quizás todas las empresas con apellidos muy repetidos son empresas
+        pequeñas, no?
+      </h1>
+      <p class="fs-1">
+        El gráfico barras nos muestra que la cantidad de empresas con apellidos
+        repetidos no necesariamente es inversamente proporcional al tamaño de la
+        empresa, que sería algo esperable si pensamos que las empresas familiares 
+        son las que tienen apellidos repetidos.
+      </p>
+      <div class="">
+        <div id="companies-with-size" class="dominant-surname-vis"></div>
+      </div>
+    </div>
 
-                    // Calcular grados para nodos
-                    const degrees = graph.nodes().map((node) => graph.degree(node));
-                    const minDegree = Math.min(...degrees);
-                    const maxDegree = Math.max(...degrees);
-                    const minSize = 2, maxSize = 8;
-
-                    let selectedNode = null; // Variable global para el nodo seleccionado
-                    let hoverNode = null; // Variable global para el nodo sobre el que se pasa el mouse
-
-                    graph.forEachNode((node) => {
-                        // Ajustar el tamaño según el grado
-                        const degree = graph.degree(node);
-                        
-                        graph.setNodeAttribute(
-                            node,
-                            "size",
-                            minSize + ((degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize)
-                        );
-                
-                        // Colorear nodos según el atributo "color"
-                        const color = graph.getNodeAttribute(node, "color") || "#ccc";
-                        graph.setNodeAttribute(node, "color", color);
-
-                        // Obtener el nombre original del nodo
-                        const originalLabel = graph.getNodeAttribute(node, "label");
-
-                        // Truncar nombres largos
-                        const maxLength = 10; // Máximo de caracteres antes de truncar
-                        const truncatedLabel =
-                            originalLabel.length > maxLength
-                                ? originalLabel.substring(0, maxLength) + "..."
-                                : originalLabel;
-
-                        // Guardar el nombre completo
-                        graph.setNodeAttribute(node, "fullLabel", originalLabel);
-
-                        // Guardamos el nombre truncado en otro atributo
-                        graph.setNodeAttribute(node, "truncatedLabel", truncatedLabel);
-
-                        // Usar el nombre truncado como etiqueta
-                        graph.setNodeAttribute(node, "label", truncatedLabel);
-                    });
-
-
-                    // Ajustar tamaño de las aristas según el peso
-                    graph.forEachEdge((edge) => {
-                        const weight = graph.getEdgeAttribute(edge, "conteo") || 1; // Usar atributo 'conteo'
-                        const minWeight = 1, maxWeight = 10;
-                        const scaledWeight =
-                            minWeight + ((weight - minDegree) / (maxDegree - minDegree)) * (maxWeight - minWeight);
-                        graph.setEdgeAttribute(edge, "size", scaledWeight ** 1.5);
-                    });              
-                        
-
-                    // Layout inicial circular para evitar superposiciones
-                    graphologyLibrary.layout.circular.assign(graph);
-
-                    // Aplicar ForceAtlas2 para organizar el grafo
-                    graphologyLibrary.layoutForceAtlas2.assign(graph, {
-                        iterations: 300,
-                        getEdgeWeight: (edge) => graph.getEdgeAttribute(edge, "conteo"),
-                        settings: {
-                            strongGravityMode: true,
-                            gravity: 0.3,
-                            scalingRatio: 10,
-                            slowDown: 1,
-                        },
-                    });
-
-                    // Renderizar el grafo con Sigma
-                    const renderer = new Sigma(graph, container);
-
-                    renderer.on("enterNode", (event) => {
-                        const node = event.node;
-                        if (hoverNode) {
-                            graph.updateNodeAttribute(hoverNode, "hover", () => false);
-                            const truncatedLabel = graph.getNodeAttribute(hoverNode, "truncatedLabel");
-                            graph.updateNodeAttribute(hoverNode, "label", () => truncatedLabel);
-                        }
-                        hoverNode = node;
-                        graph.updateNodeAttribute(node, "hover", () => true);
-                        const fullLabel = graph.getNodeAttribute(node, "fullLabel");
-                        graph.updateNodeAttribute(node, "label", () => fullLabel);
-                        renderer.refresh();
-                    });
-
-                    // Evento: al hacer clic en un nodo
-                    renderer.on("clickNode", ({ node }) => {
-                        // Limpiar el nodo previamente seleccionado (si existe)
-                        if (selectedNode) {
-                            graph.updateNodeAttribute(selectedNode, "highlighted", () => false);
-                            graph.forEachEdge(selectedNode, (edge) => {
-                                // Obtenemos el nodo que conecta con el nodo seleccionado
-                                const target = graph.opposite(selectedNode, edge);
-                                const truncatedLabel = graph.getNodeAttribute(target, "truncatedLabel");
-                                // Actualizamos el label del nodo opuesto
-                                graph.updateNodeAttribute(target, "label", () => truncatedLabel);
-                                graph.updateEdgeAttribute(edge, "highlighted", () => false);
-                            });
-
-                            // Actualizar label del nodo previamente seleccionado
-                            const truncatedLabelSelectedNode = graph.getNodeAttribute(selectedNode, "truncatedLabel");
-                            graph.updateNodeAttribute(selectedNode, "label", () => truncatedLabelSelectedNode);
-                        }
-                    
-                        // Actualizar el nodo actualmente seleccionado
-                        selectedNode = node;
-                    
-                        // Resaltar el nuevo nodo seleccionado y sus aristas
-                        graph.updateNodeAttribute(node, "highlighted", () => true);
-                        graph.forEachEdge(node, (edge) => {
-                            // Obtenemos el nodo que conecta con el nodo seleccionado
-                            const target = graph.opposite(selectedNode, edge);
-                            const completeLabel = graph.getNodeAttribute(target, "fullLabel");
-                            // Actualizamos el label del nodo opuesto
-                            graph.updateNodeAttribute(target, "label", () => completeLabel);
-                            graph.updateEdgeAttribute(edge, "highlighted", () => true);
-                        });
-
-                        // Actualizar label del nodo seleccionado
-                        const fullLabelSelectedNode = graph.getNodeAttribute(node, "fullLabel");
-                        graph.updateNodeAttribute(node, "label", () => fullLabelSelectedNode);
-                    
-                        renderer.refresh(); // Actualizar el grafo
-                    });
-                    
-                    // Evento: al tocar otro lugar (vacío) del grafo
-                    renderer.on("clickStage", () => {
-                        if (selectedNode) {
-                        // Limpiar el nodo seleccionado y sus aristas
-                        graph.updateNodeAttribute(selectedNode, "highlighted", () => false);
-                        graph.forEachEdge(selectedNode, (edge) => {
-                            // Obtenemos el nodo que conecta con el nodo seleccionado
-                            const target = graph.opposite(selectedNode, edge);
-                            const truncatedLabel = graph.getNodeAttribute(target, "truncatedLabel");
-                            // Actualizamos el label del nodo opuesto
-                            graph.updateNodeAttribute(target, "label", () => truncatedLabel);
-                            graph.updateEdgeAttribute(edge, "highlighted", () => false);
-                        });
-
-                        // Actualizar label del nodo previamente seleccionado
-                        const truncatedLabelSelectedNode = graph.getNodeAttribute(selectedNode, "truncatedLabel");
-                        graph.updateNodeAttribute(selectedNode, "label", () => truncatedLabelSelectedNode);
-                        
-                        selectedNode = null; // Reiniciar el nodo seleccionado
-                        renderer.refresh(); // Actualizar el grafo
-                        }
-                    });
-                    renderer.setSetting("nodeReducer", (node, data) => {
-                        if (data.highlighted) {
-                            return { ...data, color: "#000000", zIndex: 1 }; // Nodo destacado
-                        }
-                        return data;
-                    });
-                        
-                    renderer.setSetting("edgeReducer", (edge, data) => {
-                        if (data.highlighted) {
-                            return { ...data, color: "#000000", size: 2 }; // Arista destacada
-                        }
-                        return data;
-                    });
-                });
+    <script>
+      // Cargar datos del histograma desde un archivo JSON
+      fetch("visualization_data/bar_data.json")
+        .then((res) => res.json())
+        .then((data) => {
+          // Renderizar gráficos de barras con Plotly
+          Plotly.newPlot(
+            "bar-chart-1",
+            [
+              {
+                x: data.x,
+                y: data.y,
+                type: "bar",
+                marker: { color: "purple" },
+              },
+            ],
+            {
+              title: "Distribución de repeticiones de apellido por empresa",
+              xaxis: { title: "Cantidad de apariciones de un apellido" },
+              yaxis: { title: "Frecuencia" },
             }
-            renderGraph("surename-graph", "visualization_data/graph_most_relevant_directors_surnames.gexf");
-        </script>
-    </body>
+          );
+        });
+      fetch("visualization_data/top_companies_by_each_surname.json")
+        .then((res) => res.json())
+        .then((data) => {
+          // Renderizar gráficos de barras con Plotly
+          Plotly.newPlot(
+            "quantity-companies-to-each-surname",
+            [
+              {
+                x: data.y,
+                y: data.x,
+                type: "bar",
+                orientation: "h",
+                marker: { color: "purple" },
+              },
+            ],
+            {
+              title: "Cantidad de empresas distintas asociadas a cada apellido",
+              margin: { l: 300 },
+              xaxis: {
+                title:
+                  "Cantidad de empresas distintas asociadas a cada apellido",
+              },
+              yaxis: { title: "Frecuencia" },
+            }
+          );
+        });
+      fetch("visualization_data/top_surnames_by_company.json")
+        .then((res) => res.json())
+        .then((data) => {
+          // Renderizar gráficos de barras con Plotly
+          Plotly.newPlot(
+            "quantity-surmanes-to-each-company",
+            [
+              {
+                x: data.y,
+                y: data.x,
+                type: "bar",
+                orientation: "h",
+                marker: { color: "purple" },
+              },
+            ],
+            {
+              title: "Cantidad de apellidos distintos asociados a cada empresa",
+              margin: { l: 400 },
+              xaxis: { title: "Cantidad de apellidos distintos asociados" },
+              yaxis: { title: "Frecuencia" },
+            }
+          );
+        });
+      fetch("visualization_data/distancias_promedio.json")
+        .then((res) => res.json())
+        .then((data) => {
+          // Renderizar gráficos de barras con Plotly
+          Plotly.newPlot(
+            "hist-surename-distance",
+            [
+              {
+                x: data.x,
+                y: data.y,
+                type: "bar",
+                marker: { color: "purple" },
+              },
+            ],
+            {
+              title: "Distribución de las distancias promedio entre apellidos",
+              margin: { l: 250 },
+              xaxis: { title: "Distancia promedio con los demás apellidos" },
+              yaxis: { title: "Frecuencia" },
+            }
+          );
+        });
+      fetch("visualization_data/companies_with_size.json")
+        .then((res) => res.json())
+        .then((data) => {
+          let data_bars = [];
+          let seen_legend_groups = new Set();
+
+          for (let i = 0; i < data.x.length; i++) {
+            const group = data.company_size[i];
+            const showLegend = !seen_legend_groups.has(group); // Mostrar solo si no se ha visto el grupo
+            seen_legend_groups.add(group); // Agregar el grupo al conjunto
+            data_bars.push({
+              x: [data.y[i]],
+              y: [data.x[i]],
+              legendgroup: group,
+              marker: {
+                color: data.rgb[i],
+                line: { color: "transparent" },
+              },
+              name: data.company_size[i],
+              type: "bar",
+              orientation: "h",
+              showlegend: showLegend,
+            });
+          }
+
+          let layout = {
+            title:
+              "Cantidad de apellidos asociados a cada empresa por tamaño de empresa",
+            xaxis: { title: "Cantidad de apellidos distintos asociados" },
+            yaxis: { title: "Frecuencia" },
+            margin: { l: 420 },
+          };
+
+          Plotly.newPlot("companies-with-size", data_bars, layout);
+        });
+
+      function renderGraph(graphContainerId, gexFilePath) {
+        fetch(gexFilePath)
+          .then((res) => res.text())
+          .then((res) => {
+            let graph = graphologyLibrary.gexf.parse(graphology.Graph, res);
+            const container = document.getElementById(graphContainerId);
+
+            // Calcular grados para nodos
+            const degrees = graph.nodes().map((node) => graph.degree(node));
+            const minDegree = Math.min(...degrees);
+            const maxDegree = Math.max(...degrees);
+            const minSize = 2,
+              maxSize = 8;
+
+            let selectedNode = null; // Variable global para el nodo seleccionado
+            let hoverNode = null; // Variable global para el nodo sobre el que se pasa el mouse
+
+            graph.forEachNode((node) => {
+              // Ajustar el tamaño según el grado
+              const degree = graph.degree(node);
+
+              graph.setNodeAttribute(
+                node,
+                "size",
+                minSize +
+                  ((degree - minDegree) / (maxDegree - minDegree)) *
+                    (maxSize - minSize)
+              );
+
+              // Colorear nodos según el atributo "color"
+              const color = graph.getNodeAttribute(node, "color") || "#ccc";
+              graph.setNodeAttribute(node, "color", color);
+
+              // Obtener el nombre original del nodo
+              const originalLabel = graph.getNodeAttribute(node, "label");
+
+              // Truncar nombres largos
+              const maxLength = 10; // Máximo de caracteres antes de truncar
+              const truncatedLabel =
+                originalLabel.length > maxLength
+                  ? originalLabel.substring(0, maxLength) + "..."
+                  : originalLabel;
+
+              // Guardar el nombre completo
+              graph.setNodeAttribute(node, "fullLabel", originalLabel);
+
+              // Guardamos el nombre truncado en otro atributo
+              graph.setNodeAttribute(node, "truncatedLabel", truncatedLabel);
+
+              // Usar el nombre truncado como etiqueta
+              graph.setNodeAttribute(node, "label", truncatedLabel);
+            });
+
+            // Ajustar tamaño de las aristas según el peso
+            graph.forEachEdge((edge) => {
+              const weight = graph.getEdgeAttribute(edge, "conteo") || 1; // Usar atributo 'conteo'
+              const minWeight = 1,
+                maxWeight = 10;
+              const scaledWeight =
+                minWeight +
+                ((weight - minDegree) / (maxDegree - minDegree)) *
+                  (maxWeight - minWeight);
+              graph.setEdgeAttribute(edge, "size", scaledWeight ** 1.5);
+            });
+
+            // Layout inicial circular para evitar superposiciones
+            graphologyLibrary.layout.circular.assign(graph);
+
+            // Aplicar ForceAtlas2 para organizar el grafo
+            graphologyLibrary.layoutForceAtlas2.assign(graph, {
+              iterations: 300,
+              getEdgeWeight: (edge) => graph.getEdgeAttribute(edge, "conteo"),
+              settings: {
+                strongGravityMode: true,
+                gravity: 0.3,
+                scalingRatio: 10,
+                slowDown: 1,
+              },
+            });
+
+            // Renderizar el grafo con Sigma
+            const renderer = new Sigma(graph, container);
+
+            renderer.on("enterNode", (event) => {
+              const node = event.node;
+              if (hoverNode) {
+                graph.updateNodeAttribute(hoverNode, "hover", () => false);
+                const truncatedLabel = graph.getNodeAttribute(
+                  hoverNode,
+                  "truncatedLabel"
+                );
+                graph.updateNodeAttribute(
+                  hoverNode,
+                  "label",
+                  () => truncatedLabel
+                );
+              }
+              hoverNode = node;
+              graph.updateNodeAttribute(node, "hover", () => true);
+              const fullLabel = graph.getNodeAttribute(node, "fullLabel");
+              graph.updateNodeAttribute(node, "label", () => fullLabel);
+              renderer.refresh();
+            });
+
+            // Evento: al hacer clic en un nodo
+            renderer.on("clickNode", ({ node }) => {
+              // Limpiar el nodo previamente seleccionado (si existe)
+              if (selectedNode) {
+                graph.updateNodeAttribute(
+                  selectedNode,
+                  "highlighted",
+                  () => false
+                );
+                graph.forEachEdge(selectedNode, (edge) => {
+                  // Obtenemos el nodo que conecta con el nodo seleccionado
+                  const target = graph.opposite(selectedNode, edge);
+                  const truncatedLabel = graph.getNodeAttribute(
+                    target,
+                    "truncatedLabel"
+                  );
+                  // Actualizamos el label del nodo opuesto
+                  graph.updateNodeAttribute(
+                    target,
+                    "label",
+                    () => truncatedLabel
+                  );
+                  graph.updateEdgeAttribute(edge, "highlighted", () => false);
+                });
+
+                // Actualizar label del nodo previamente seleccionado
+                const truncatedLabelSelectedNode = graph.getNodeAttribute(
+                  selectedNode,
+                  "truncatedLabel"
+                );
+                graph.updateNodeAttribute(
+                  selectedNode,
+                  "label",
+                  () => truncatedLabelSelectedNode
+                );
+              }
+
+              // Actualizar el nodo actualmente seleccionado
+              selectedNode = node;
+
+              // Resaltar el nuevo nodo seleccionado y sus aristas
+              graph.updateNodeAttribute(node, "highlighted", () => true);
+              graph.forEachEdge(node, (edge) => {
+                // Obtenemos el nodo que conecta con el nodo seleccionado
+                const target = graph.opposite(selectedNode, edge);
+                const completeLabel = graph.getNodeAttribute(
+                  target,
+                  "fullLabel"
+                );
+                // Actualizamos el label del nodo opuesto
+                graph.updateNodeAttribute(target, "label", () => completeLabel);
+                graph.updateEdgeAttribute(edge, "highlighted", () => true);
+              });
+
+              // Actualizar label del nodo seleccionado
+              const fullLabelSelectedNode = graph.getNodeAttribute(
+                node,
+                "fullLabel"
+              );
+              graph.updateNodeAttribute(
+                node,
+                "label",
+                () => fullLabelSelectedNode
+              );
+
+              renderer.refresh(); // Actualizar el grafo
+            });
+
+            // Evento: al tocar otro lugar (vacío) del grafo
+            renderer.on("clickStage", () => {
+              if (selectedNode) {
+                // Limpiar el nodo seleccionado y sus aristas
+                graph.updateNodeAttribute(
+                  selectedNode,
+                  "highlighted",
+                  () => false
+                );
+                graph.forEachEdge(selectedNode, (edge) => {
+                  // Obtenemos el nodo que conecta con el nodo seleccionado
+                  const target = graph.opposite(selectedNode, edge);
+                  const truncatedLabel = graph.getNodeAttribute(
+                    target,
+                    "truncatedLabel"
+                  );
+                  // Actualizamos el label del nodo opuesto
+                  graph.updateNodeAttribute(
+                    target,
+                    "label",
+                    () => truncatedLabel
+                  );
+                  graph.updateEdgeAttribute(edge, "highlighted", () => false);
+                });
+
+                // Actualizar label del nodo previamente seleccionado
+                const truncatedLabelSelectedNode = graph.getNodeAttribute(
+                  selectedNode,
+                  "truncatedLabel"
+                );
+                graph.updateNodeAttribute(
+                  selectedNode,
+                  "label",
+                  () => truncatedLabelSelectedNode
+                );
+
+                selectedNode = null; // Reiniciar el nodo seleccionado
+                renderer.refresh(); // Actualizar el grafo
+              }
+            });
+            renderer.setSetting("nodeReducer", (node, data) => {
+              if (data.highlighted) {
+                return { ...data, color: "#000000", zIndex: 1 }; // Nodo destacado
+              }
+              return data;
+            });
+
+            renderer.setSetting("edgeReducer", (edge, data) => {
+              if (data.highlighted) {
+                return { ...data, color: "#000000", size: 2 }; // Arista destacada
+              }
+              return data;
+            });
+          });
+      }
+      renderGraph(
+        "surename-graph",
+        "visualization_data/graph_most_relevant_directors_surnames.gexf"
+      );
+    </script>
+  </body>
 </html>
-    
