@@ -6,19 +6,19 @@
     <!-- Bootstrap CSS CDN -->
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
       body {
         text-align: left;
         font-family: "Arial", sans-serif;
         height: 100%;
+        max-width: 95vw;
         margin: 0;
         padding: 0;
       }
 
       .main-cont {
-        max-width: 95vw;
+        min-width: 100%;
         margin: 0 auto;
         height: fit-content;
       }
@@ -118,8 +118,10 @@
     </script>
     <!-- Bootstrap JS and Popper.js (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/plotly-2.35.2.min.js"></script>
     <script src="js/graphology.min.js"></script>
     <script src="js/graphology-library.min.js"></script>
@@ -127,9 +129,72 @@
   </head>
 
   <body class="container-fluid">
-    <h1 class="my-5 text-center">
-      Apellidos de los directivos de empresas Chilenas
-    </h1>
+    <section class="my-5">
+      <h1>
+        Apellidos de los directivos de empresas Chilenas
+      </h1>
+      <h5 class="text-secondary">
+        Análisis de las relaciones entre empresas y los apellidos de sus
+        directivos
+      </h5>
+      <div class="my-4">
+        <div class="row">
+          <!-- Card 1: Situación -->
+          <div class="col-12 col-md-4 d-flex">
+            <div class="card border-primary flex-fill">
+              <div class="card-body">
+                <h5 class="card-title text-primary">Situación</h5>
+                <p class="card-text">
+                  En Chile, es común encontrar casos donde los directivos de
+                  empresas o instituciones son seleccionados debido a relaciones
+                  familiares o de amistad.
+                  Este fenómeno puede dar lugar a la formación de redes de poder
+                  dentro de las empresas, así como entre diferentes empresas,
+                  consolidando influencia que no siempre se basa en méritos o
+                  capacidades.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2: Complicación -->
+          <div class="col-12 col-md-4 d-flex">
+            <div class="card border-danger flex-fill">
+              <div class="card-body">
+                <h5 class="card-title text-danger">Complicación</h5>
+                <p class="card-text">
+                  El nepotismo puede generar importantes problemas
+                  organizacionales, como la contratación de personas que no
+                  cuentan con las habilidades o experiencia necesarias para
+                  ocupar cargos directivos.
+                  Esto no solo afecta la eficiencia de las empresas, sino que
+                  también puede desmotivar al personal y disminuir la confianza
+                  en los procesos de selección.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 3: Solución -->
+          <div class="col-12 col-md-4 d-flex">
+            <div class="card border-success flex-fill">
+              <div class="card-body">
+                <h5 class="card-title text-success">Solución</h5>
+                <p class="card-text">
+                  Implementar herramientas que permitan visualizar de manera
+                  rápida e intuitiva la repetición de apellidos de directivos en
+                  múltiples empresas o dentro de una misma institución.
+                  Esta visualización puede ayudar a identificar posibles casos
+                  de nepotismo y relaciones de poder, facilitando la toma de
+                  decisiones informadas y promoviendo una mayor transparencia
+                  organizacional.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
     <div class="row" id="global-first-row">
       <div class="col-8 graph-container">
         <h4>
@@ -151,8 +216,7 @@
             src="visualization_data/wordcloud.png"
             alt="Nube de Palabras"
             width="80%"
-            id="global-vis-wordcloud"
-          />
+            id="global-vis-wordcloud" />
         </div>
       </div>
     </div>
@@ -160,14 +224,12 @@
       <div class="col down-global-vis-container">
         <div
           id="quantity-companies-to-each-surname"
-          class="down-global-vis-bar-plot"
-        ></div>
+          class="down-global-vis-bar-plot"></div>
       </div>
       <div class="col down-global-vis-container">
         <div
           id="quantity-surmanes-to-each-company"
-          class="down-global-vis-bar-plot"
-        ></div>
+          class="down-global-vis-bar-plot"></div>
       </div>
     </div>
 
@@ -193,8 +255,7 @@
           src="visualization_data/cluster-map-apellidos-empresas.png"
           alt="Cluster de apellidos y empresas"
           width="70%"
-          id="cluster-map-vis"
-        />
+          id="cluster-map-vis" />
       </div>
     </div>
 
@@ -209,7 +270,7 @@
         distancia, lo que implica que una familia para llegar a cualquier otra
         que desee tendría que pasar por alrededord de 5 a 6 empresas o familias.
       </p>
-      <div class="">
+      <div class>
         <div id="hist-surename-distance" class="dominant-surname-vis"></div>
       </div>
     </div>
@@ -222,10 +283,11 @@
       <p class="fs-1">
         El gráfico barras nos muestra que la cantidad de empresas con apellidos
         repetidos no necesariamente es inversamente proporcional al tamaño de la
-        empresa, que sería algo esperable si pensamos que las empresas familiares 
+        empresa, que sería algo esperable si pensamos que las empresas
+        familiares
         son las que tienen apellidos repetidos.
       </p>
-      <div class="">
+      <div class>
         <div id="companies-with-size" class="dominant-surname-vis"></div>
       </div>
     </div>
