@@ -15,6 +15,8 @@
         max-width: 95vw;
         margin: 0;
         padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
       }
 
       .main-cont {
@@ -195,102 +197,118 @@
 
     </section>
 
-    <div class="row" id="global-first-row">
-      <div class="col-8 graph-container">
-        <h4>
-          Grafo de empresas y los apellidos de los directivos que han tenido
-        </h4>
-        <p class="fw-light text-secondary">
-          El ancho de las aristas indica la cantidad de veces que un apellido ha
-          aparecido en algún directivo de una empresa.
+    <section class="card p-4">
+      <h1>Visualización global</h1>
+      <div class="row" id="global-first-row">
+        <div class="col-8 graph-container">
+          <h4>
+            Grafo de empresas y los apellidos de los directivos que han tenido
+          </h4>
+          <p class="fw-light text-secondary">
+            El ancho de las aristas indica la cantidad de veces que un apellido
+            ha
+            aparecido en algún directivo de una empresa.
+          </p>
+          <div id="surename-graph" class="network-graph"></div>
+        </div>
+        <div class="col-4" id="side-secodary-global-visualization">
+          <div class="row secondary-global-vis-container">
+            <div id="bar-chart-1" class="secondary-global-visualization"></div>
+          </div>
+          <div class="row secondary-global-vis-container">
+            <img
+              id="wordcloud"
+              src="visualization_data/wordcloud.png"
+              alt="Nube de Palabras"
+              width="80%"
+              id="global-vis-wordcloud" />
+          </div>
+        </div>
+      </div>
+      <div class="row" id="global-second-row">
+        <div class="col down-global-vis-container">
+          <div
+            id="quantity-companies-to-each-surname"
+            class="down-global-vis-bar-plot"></div>
+        </div>
+        <div class="col down-global-vis-container">
+          <div
+            id="quantity-surmanes-to-each-company"
+            class="down-global-vis-bar-plot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card p-4 my-5">
+      <div class="main-cont container">
+        <h1 class="mb-1">
+          Hay apellidos con mucha presencia en una o varias empresas?
+        </h1>
+        <p class="fs-1">
+          Se observan apellidos como los GARCIA que tienen una presencia muy
+          importante en una sola empresa, en su caso, "COMPAÑIA DE INVERSINOES
+          LA
+          ESPAÑOL S.A.". Por otro lado hay apellidos como LARRAIN que tienen una
+          importante presencia es muchas empresas.
         </p>
-        <div id="surename-graph" class="network-graph"></div>
-      </div>
-      <div class="col-4" id="side-secodary-global-visualization">
-        <div class="row secondary-global-vis-container">
-          <div id="bar-chart-1" class="secondary-global-visualization"></div>
-        </div>
-        <div class="row secondary-global-vis-container">
+        <p class="fs-1">
+          Un último insight importante de destacar es identificar ciertos
+          apellidos altamente relacionados, como es el caso de FERNANDEZ y
+          SILVA,
+          lo que se condice con hay empresas donde ambos apellidos tienen
+          presencia entre los directivos, así, pudiendo observar posibles
+          agrupaciones de familias relacionadas.
+        </p>
+        <div class="cluster-map-company-surname d-flex justify-content-center">
           <img
-            id="wordcloud"
-            src="visualization_data/wordcloud.png"
-            alt="Nube de Palabras"
-            width="80%"
-            id="global-vis-wordcloud" />
+            src="visualization_data/cluster-map-apellidos-empresas.png"
+            alt="Cluster de apellidos y empresas"
+            width="70%"
+            id="cluster-map-vis" />
         </div>
       </div>
-    </div>
-    <div class="row" id="global-second-row">
-      <div class="col down-global-vis-container">
-        <div
-          id="quantity-companies-to-each-surname"
-          class="down-global-vis-bar-plot"></div>
-      </div>
-      <div class="col down-global-vis-container">
-        <div
-          id="quantity-surmanes-to-each-company"
-          class="down-global-vis-bar-plot"></div>
-      </div>
-    </div>
+    </section>
 
-    <div class="main-cont container mt-5">
-      <h1 class="mb-1">
-        Hay apellidos con mucha presencia en una o varias empresas?
-      </h1>
-      <p class="fs-1">
-        Se observan apellidos como los GARCIA que tienen una presencia muy
-        importante en una sola empresa, en su caso, "COMPAÑIA DE INVERSINOES LA
-        ESPAÑOL S.A.". Por otro lado hay apellidos como LARRAIN que tienen una
-        importante presencia es muchas empresas.
-      </p>
-      <p class="fs-1">
-        Un último insight importante de destacar es identificar ciertos
-        apellidos altamente relacionados, como es el caso de FERNANDEZ y SILVA,
-        lo que se condice con hay empresas donde ambos apellidos tienen
-        presencia entre los directivos, así, pudiendo observar posibles
-        agrupaciones de familias relacionadas.
-      </p>
-      <div class="cluster-map-company-surname d-flex justify-content-center">
-        <img
-          src="visualization_data/cluster-map-apellidos-empresas.png"
-          alt="Cluster de apellidos y empresas"
-          width="70%"
-          id="cluster-map-vis" />
+    <section class="card p-4 my-5">
+      <div class="main-cont container">
+        <h1 class="my-3">
+          Y si yo tuviera una de esas empresa, sería fácil llegar a las otras
+          familias?
+        </h1>
+        <p class="fs-1">
+          Es interesante notar que la distancia promedio de cada familia a todas
+          las demás tiene una fuerte dominancia entre las 5 y 6 conexiones de
+          distancia, lo que implica que una familia para llegar a cualquier otra
+          que desee tendría que pasar por alrededord de 5 a 6 empresas o
+          familias.
+        </p>
+        <div class>
+          <div id="hist-surename-distance" class="dominant-surname-vis"></div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="main-cont container mt-5">
-      <h1 class="my-3">
-        Y si yo tuviera una de esas empresa, sería fácil llegar a las otras
-        familias?
-      </h1>
-      <p class="fs-1">
-        Es interesante notar que la distancia promedio de cada familia a todas
-        las demás tiene una fuerte dominancia entre las 5 y 6 conexiones de
-        distancia, lo que implica que una familia para llegar a cualquier otra
-        que desee tendría que pasar por alrededord de 5 a 6 empresas o familias.
-      </p>
-      <div class>
-        <div id="hist-surename-distance" class="dominant-surname-vis"></div>
+    <section class="card p-4 my-5">
+      <div class="main-cont container">
+        <h1 class="my-3">
+          Pero quizás todas las empresas con apellidos muy repetidos son
+          empresas
+          pequeñas, no?
+        </h1>
+        <p class="fs-1">
+          El gráfico barras nos muestra que la cantidad de empresas con
+          apellidos
+          repetidos no necesariamente es inversamente proporcional al tamaño de
+          la
+          empresa, que sería algo esperable si pensamos que las empresas
+          familiares
+          son las que tienen apellidos repetidos.
+        </p>
+        <div class>
+          <div id="companies-with-size" class="dominant-surname-vis"></div>
+        </div>
       </div>
-    </div>
-
-    <div class="main-cont container mt-5">
-      <h1 class="my-3">
-        Pero quizás todas las empresas con apellidos muy repetidos son empresas
-        pequeñas, no?
-      </h1>
-      <p class="fs-1">
-        El gráfico barras nos muestra que la cantidad de empresas con apellidos
-        repetidos no necesariamente es inversamente proporcional al tamaño de la
-        empresa, que sería algo esperable si pensamos que las empresas
-        familiares
-        son las que tienen apellidos repetidos.
-      </p>
-      <div class>
-        <div id="companies-with-size" class="dominant-surname-vis"></div>
-      </div>
-    </div>
+    </section>
 
     <script>
       // Cargar datos del histograma desde un archivo JSON
