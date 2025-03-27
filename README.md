@@ -14,3 +14,5 @@ Esto puede llevar a que las empresas o instituciones no funcionen de la mejor ma
 ### Solución
 
 Crear una visualización que permita ver de forma rápida y sencilla los apellidos de directivos de empresas e instituciones en Chile que tengan una presencia muy alta en los directorios de estas, o que estén presentes en muchas empresas o instituciones.
+
+![Poster](poster.png)
